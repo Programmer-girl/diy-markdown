@@ -3,10 +3,24 @@ import ReactDOM from 'react-dom'
 import './index.css'
 // import remarkable from './remarkable'
 // import markdownIt from './markdown-it'
-var MarkdownIt = require('markdown-it'),
- md = new MarkdownIt();
-var result = md.render('# markdown-it rulezz!');
+var MarkdownIt = require('markdown-it');
+var hljs = require('highlight.js');
 
+//  md = new MarkdownIt();
+// var result = md.render('# markdown-it rulezz!');
+
+// Actual default values
+// var md = MarkdownIt({
+//   highlight: function (str, lang) {
+//     if (lang && hljs.getLanguage(lang)) {
+//       try {
+//         return hljs.highlight(lang, str).value;
+//       } catch (__) {}
+//     }
+
+//     return ''; // use external default escaping
+//   }
+// });
 var timeout = null;
 class MackdownEditor extends React.Component {
 	constructor(props) {
@@ -51,6 +65,19 @@ class LeftEditComponent extends React.Component {
 }
 class RightShowComponent extends React.Component {
 	show(a) {
+        var md = MarkdownIt({
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(lang, str).value;
+                } catch (__) {}
+                }
+
+                return '<pre class="hljs"><code>' +
+               hljs.highlight(lang, str, true).value +
+               '</code></pre>'; // use external default escaping
+            }
+        });
 		return md.render(a);
 	}
 	render() {
