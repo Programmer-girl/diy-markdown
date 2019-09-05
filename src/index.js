@@ -1,7 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import remarkable from './remarkable';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+// import remarkable from './remarkable'
+// import markdownIt from './markdown-it'
+var MarkdownIt = require('markdown-it'),
+ md = new MarkdownIt();
+var result = md.render('# markdown-it rulezz!');
+
 var timeout = null;
 class MackdownEditor extends React.Component {
 	constructor(props) {
@@ -46,10 +51,11 @@ class LeftEditComponent extends React.Component {
 }
 class RightShowComponent extends React.Component {
 	show(a) {
-		return remarkable(a);
+		return md.render(a);
 	}
 	render() {
-		return <div className="right-show-wrap">{this.show(this.props.value)}</div>;
+        // >{this.show(this.props.value)}
+		return <div className="right-show-wrap" dangerouslySetInnerHTML={{__html: this.show(this.props.value)}}></div>;
 	}
 }
 
